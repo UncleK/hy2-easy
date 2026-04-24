@@ -1,0 +1,23 @@
+server:
+  host: "REPLACE_WITH_SERVER_IP_OR_DOMAIN"
+  port: 24883
+  external_port: 24883
+  listen: "::"
+  server_names:
+    - "www.cloudflare.com"
+  reality_dest: "www.cloudflare.com:443"
+  reality_private_key: "REPLACE_WITH_REALITY_PRIVATE_KEY"
+  reality_public_key: "REPLACE_WITH_REALITY_PUBLIC_KEY"
+  short_id: "0123456789abcdef"
+
+auth:
+  uuid: "REPLACE_WITH_CLIENT_UUID"
+
+client:
+  remark: "personal-main"
+  email: "primary-v2rayng"
+  fingerprint: "chrome"
+  flow: "xtls-rprx-vision"
+
+log:
+  level: "warning"

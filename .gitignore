@@ -1,0 +1,22 @@
+# Local secrets and environment overrides
+.env
+.env.local
+
+# Rendered deployment artifacts
+rendered/
+
+# Node-specific private source config
+infra/node.yaml
+
+# Backups and transient state
+state/backups/
+state/*.json
+state/*.log
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.py[cod]

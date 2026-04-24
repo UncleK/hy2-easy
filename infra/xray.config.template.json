@@ -1,0 +1,56 @@
+{
+  "log": {
+    "loglevel": "{{LOG_LEVEL}}"
+  },
+  "inbounds": [
+    {
+      "tag": "vless-reality-main",
+      "listen": "{{INBOUND_LISTEN}}",
+      "port": "{{INBOUND_PORT}}",
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "{{CLIENT_UUID}}",
+            "flow": "{{CLIENT_FLOW}}",
+            "email": "{{CLIENT_EMAIL}}"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "dest": "{{REALITY_DEST}}",
+          "xver": 0,
+          "serverNames": "{{REALITY_SERVER_NAMES}}",
+          "privateKey": "{{REALITY_PRIVATE_KEY}}",
+          "minClientVer": "",
+          "maxClientVer": "",
+          "maxTimeDiff": 0,
+          "shortIds": "{{REALITY_SHORT_IDS}}"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "blocked"
+    }
+  ]
+}
