@@ -1,6 +1,7 @@
 # Local secrets and environment overrides
 .env
 .env.local
+infra/hysteria.private.yaml
 
 # Rendered deployment artifacts
 rendered/

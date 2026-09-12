@@ -1,49 +1,38 @@
-# xray-personal-gateway
+# Personal Hysteria 2 gateway
 
-Single-user Xray-core deployment scaffold for a stable `VLESS + REALITY + xtls-rprx-vision` line, managed with "config as source" and rendered deployment artifacts.
+This repository reconstructs the current Hetzner VPN deployment from a read-only
+server inspection on 2026-09-13. The GitHub repository retains its original
+`xray-personal-gateway` name, but now targets **Hysteria 2 v2.12.1 on UDP 24443**.
+Obsolete Xray code has been removed.
 
-## What This Project Does
+The server uses password authentication, a self-signed TLS certificate, and an
+HTTP proxy masquerade. No control panel is involved.
 
-- manages one dedicated Xray-core line, defaulting to `24883/tcp`
-- treats `infra/node.yaml` as the only editable source of truth
-- renders a production-ready `config.json`
-- generates `v2rayNG` import artifacts
-- keeps secrets and rendered output out of Git by default
+## Quick start
 
-## Quick Start
-
-1. Copy [`infra/node.example.yaml`](./infra/node.example.yaml) to `infra/node.yaml`.
-2. Fill in the real server host, UUID, Reality keys, and short ID.
-3. Install or verify Xray on the server:
-
-```bash
-bash scripts/install_xray.sh
+```powershell
+python -m pip install -r requirements-hysteria.txt
+python scripts/audit_hysteria.py root@YOUR_SERVER --identity C:\path\to\ssh-key
 ```
 
-4. Render and apply the config:
+To render a config, supply the existing password via `HYSTERIA_PASSWORD` in a
+private environment and run `python scripts/render_hysteria.py`. Output stays in
+Git-ignored `rendered/`. This command does not deploy anything.
 
-```bash
-bash scripts/apply_config.sh
-```
+See [operations and recovery](docs/hysteria-operations.md) for observed server
+paths, file permissions, backup requirements and deliberate deployment steps.
 
-5. Generate client artifacts:
+## Files
 
-```bash
-python3 scripts/generate_v2rayng_profile.py
-```
+- `infra/hysteria.config.template.yaml`: live configuration with a password placeholder.
+- `infra/hysteria-server.service`: observed production systemd unit.
+- `scripts/audit_hysteria.py`: read-only remote drift and service checks.
+- `scripts/render_hysteria.py`: private local config rendering.
+- `tests/test_hysteria.py`: credential substitution and rejection checks.
+- `state/`: local private backup notes; backup contents are ignored.
 
-6. Import `rendered/v2rayng-uri.txt` into `v2rayNG`.
+Run tests with `python -m unittest discover -s tests -v`.
 
-## Layout
-
-- `docs/`: architecture, operations, and client instructions
-- `infra/`: source config, JSON template, and security-group checklist
-- `scripts/`: installation, rendering, apply, artifact generation, health checks
-- `state/`: local notes and backups only
-
-## Safety Notes
-
-- Do not commit `infra/node.yaml`.
-- Do not commit real UUIDs, private keys, public keys, or short IDs.
-- Do not commit `rendered/`; it contains client-ready artifacts derived from live secrets.
-- This project is intended to run without `x-ui` or any panel.
+Passwords, TLS keys, client artifacts and local backups are excluded from Git.
+The repository alone cannot restore the existing TLS identity; retain encrypted
+private backups of the live configuration, certificate and key.
