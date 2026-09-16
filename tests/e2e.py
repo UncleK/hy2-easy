@@ -86,8 +86,32 @@ def main():
         # systemd-tmpfiles may still be cleaning /tmp just after container boot.
         with tempfile.TemporaryDirectory(prefix="hy2-easy-e2e-", dir="/root") as directory:
             temp = Path(directory)
-            command("bash", str(ROOT / "install.sh"), "--host", "127.0.0.1")
-            print("PASS: full installer + real systemd start", flush=True)
+            # Exercise the standalone download path before publishing a tag.
+            # Only the fixed-tag source fetch is served locally; core downloads
+            # still use the real HTTPS endpoint and the pinned digest.
+            bootstrap = temp / "install.sh"
+            shutil.copyfile(ROOT / "install.sh", bootstrap)
+            shim = temp / "bin"
+            shim.mkdir()
+            expected_url = f"https://raw.githubusercontent.com/UncleK/hy2-easy/v{hy2.VERSION}/scripts/hy2_easy.py"
+            wrapper = shim / "curl"
+            wrapper.write_text(
+                "#!/usr/bin/python3\nimport os,sys,shutil\n"
+                "args=sys.argv[1:]\n"
+                "urls=[a for a in args if a.startswith('https://raw.githubusercontent.com/')]\n"
+                "if urls:\n"
+                f" assert urls == [{expected_url!r}], 'Wrong release URL after OS detection'\n"
+                f" shutil.copyfile({str(ROOT / 'scripts/hy2_easy.py')!r}, args[args.index('-o')+1])\n"
+                "else:\n os.execv('/usr/bin/curl', ['/usr/bin/curl', *args])\n"
+            )
+            wrapper.chmod(0o755)
+            old_path = os.environ["PATH"]
+            try:
+                os.environ["PATH"] = str(shim) + ":" + old_path
+                command("bash", str(bootstrap), "--host", "127.0.0.1")
+            finally:
+                os.environ["PATH"] = old_path
+            print("PASS: standalone bootstrap URL + checksum + real systemd start", flush=True)
             command("systemctl", "is-enabled", "hy2-easy")
             command("systemctl", "is-active", "hy2-easy")
             for name in ("share.txt", "share.png", "client.json", "state.json"):

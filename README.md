@@ -68,12 +68,13 @@ sudo ufw allow 24443/udp
 **下面这条命令是在云服务器里运行，不是在自己电脑的 PowerShell 里运行。**
 
 ```bash
-curl -fsSLo hy2-easy-install.sh https://github.com/UncleK/hy2-easy/releases/download/v0.1.0/install.sh && sudo bash hy2-easy-install.sh
+curl -fsSLo hy2-easy-install.sh https://github.com/UncleK/hy2-easy/releases/download/v0.1.1/install.sh && sudo bash hy2-easy-install.sh
 ```
 
 复制整行 → 粘贴到服务器终端 → 按回车。
 
 - 提示输入 sudo 密码时，输入服务器用户的密码并回车；输入时不显示字符是正常的。
+- 如果提示 `sudo: command not found`，且你已用 `root` 登录，执行 `bash hy2-easy-install.sh` 即可；后面的管理命令同样可以去掉 `sudo`。
 - 提示 **「服务器地址」** 时，粘贴第 1 步复制的公网 IP，再按回车。
 - 如果程序已经显示正确的公网 IP，直接回车即可。
 
@@ -187,7 +188,7 @@ hy2-easy 只做一件事：**把个人连接需要的服务装好，并生成能
 - [参与开发](CONTRIBUTING.md)
 - [MIT 许可证](LICENSE)
 
-hy2-easy 0.1.0 固定使用 Hysteria 2.12.2，不自动升级上游核心。
+hy2-easy 0.1.1 固定使用 Hysteria 2.12.2，不自动升级上游核心。
 项目原名 `xray-personal-gateway`，旧实现保留在 Git 历史中。
 
 </details>

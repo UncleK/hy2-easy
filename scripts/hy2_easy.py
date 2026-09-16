@@ -18,7 +18,7 @@ import tempfile
 import time
 from urllib.parse import quote, urlencode
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 CORE_VERSION = "2.12.2"
 CORE_HASHES = {
     "x86_64": ("amd64", "6493dfffd55b5883f64c76c63880ecc32988f0c568c9ca9014907877b4d55f94"),

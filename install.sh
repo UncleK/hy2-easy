@@ -2,8 +2,8 @@
 set -euo pipefail
 umask 077
 
-VERSION='0.1.0'
-TOOL_SHA256='15c75bbe1ce01ac39cee0b5d5b610d414d5682083ada89df481d10f9d92b8be1'
+HY2_EASY_VERSION='0.1.1'
+TOOL_SHA256='a8a329f17c7be7d3cb540e8c18c27a78f745491b698234890c8a5e87d7dcafca'
 
 if [[ ${1:-} == '--help' ]]; then
     echo 'Usage: sudo bash install.sh [--host SERVER_IP_OR_DOMAIN] [--port 24443]'
@@ -49,7 +49,7 @@ if [[ -f "$script_dir/scripts/hy2_easy.py" ]]; then
 else
     curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' \
         --connect-timeout 15 --max-time 120 --retry 2 \
-        "https://raw.githubusercontent.com/UncleK/hy2-easy/v$VERSION/scripts/hy2_easy.py" \
+        "https://raw.githubusercontent.com/UncleK/hy2-easy/v$HY2_EASY_VERSION/scripts/hy2_easy.py" \
         -o "$work/hy2_easy.py"
 fi
 if ! printf '%s  %s\n' "$TOOL_SHA256" "$work/hy2_easy.py" | sha256sum --check --status; then
