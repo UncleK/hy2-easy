@@ -45,6 +45,11 @@ jobs:
           docker run -d --name hy2-easy-agent-qa --privileged --cgroupns=private \
             --tmpfs /run --tmpfs /run/lock \
             -p 127.0.0.1:22222:22 -p 127.0.0.1:24444:24444/udp hy2-easy-test
+          for i in $(seq 1 30); do
+            if docker exec hy2-easy-agent-qa systemctl is-active --quiet systemd-tmpfiles-setup.service; then break; fi
+            sleep 1
+          done
+          docker exec hy2-easy-agent-qa systemctl is-active --quiet systemd-tmpfiles-setup.service
           docker exec hy2-easy-agent-qa bash -c 'apt-get update -qq && apt-get install -y --no-install-recommends openssh-server >/dev/null && echo root:hy2-easy-disposable-test | chpasswd && printf "PermitRootLogin yes\nPasswordAuthentication yes\n" > /etc/ssh/sshd_config.d/test-only.conf && systemctl restart ssh'
       - run: node agent/tests/integration.mjs --disposable-container
       - name: Remove disposable server

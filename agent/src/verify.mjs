@@ -25,10 +25,20 @@ export async function privateDirectory() {
   try {
     if (process.platform === 'win32') {
       const system = process.env.SystemRoot || 'C:\\Windows';
-      const {stdout} = await execute(join(system, 'System32', 'whoami.exe'), ['/user', '/fo', 'csv', '/nh'], {windowsHide: true});
-      const sid = stdout.match(/S-1-5-\d+(?:-\d+)+/)?.[0];
-      if (!sid) throw new Error('无法识别当前 Windows 用户');
-      await execute(join(system, 'System32', 'icacls.exe'), [dir, '/inheritance:r', '/grant:r', `*${sid}:(OI)(CI)F`, '*S-1-5-18:(OI)(CI)F'], {windowsHide: true});
+      // Build an exact DACL. Disabling inheritance alone can retain explicit ACEs
+      // supplied by Windows on elevated runner/administrator-created directories.
+      const script = `$ErrorActionPreference='Stop';
+        $sid=[System.Security.Principal.WindowsIdentity]::GetCurrent().User;
+        $acl=[System.Security.AccessControl.DirectorySecurity]::new();
+        $acl.SetOwner($sid); $acl.SetAccessRuleProtection($true,$false);
+        foreach($identity in @($sid,[System.Security.Principal.SecurityIdentifier]::new('S-1-5-18'))){
+          $rule=[System.Security.AccessControl.FileSystemAccessRule]::new($identity,'FullControl','ContainerInherit,ObjectInherit','None','Allow');
+          $acl.AddAccessRule($rule);
+        }
+        [System.IO.Directory]::SetAccessControl($env:HY2_PRIVATE_DIRECTORY,$acl);`;
+      await execute(join(system, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe'),
+        ['-NoProfile', '-NonInteractive', '-EncodedCommand', Buffer.from(script, 'utf16le').toString('base64')],
+        {windowsHide: true, env: {...process.env, HY2_PRIVATE_DIRECTORY: dir}});
     } else await chmod(dir, 0o700);
     return dir;
   } catch (e) { await rm(dir, {recursive: true, force: true}); throw e; }
