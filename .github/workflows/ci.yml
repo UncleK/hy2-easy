@@ -1,0 +1,54 @@
+name: Verify
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m unittest discover -s tests -v
+      - run: bash -n install.sh && shellcheck install.sh
+  integration:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            base: debian:12-slim
+          - runner: ubuntu-24.04
+            base: debian:13-slim
+          - runner: ubuntu-24.04
+            base: ubuntu:22.04
+          - runner: ubuntu-24.04
+            base: ubuntu:24.04
+          - runner: ubuntu-24.04-arm
+            base: debian:12-slim
+          - runner: ubuntu-24.04-arm
+            base: ubuntu:24.04
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build disposable systemd environment
+        run: docker build --build-arg 'BASE=${{ matrix.base }}' -t hy2-easy-test -f tests/Dockerfile .
+      - name: Boot isolated systemd
+        run: |
+          docker run -d --name hy2-easy-qa --privileged --cgroupns=private \
+            --tmpfs /run --tmpfs /run/lock \
+            --mount type=bind,source="$PWD",target=/src,readonly hy2-easy-test
+          for i in $(seq 1 30); do
+            if docker exec hy2-easy-qa test -d /run/systemd/system; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Test installation, QR, real tunnel, rejection, restart and removal
+        run: docker exec hy2-easy-qa python3 /src/tests/e2e.py --disposable-container
+      - name: Clean up
+        if: always()
+        run: docker rm -f hy2-easy-qa || true

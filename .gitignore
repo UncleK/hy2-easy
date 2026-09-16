@@ -21,3 +21,12 @@ Thumbs.db
 # Python cache
 __pycache__/
 *.py[cod]
+
+# Private test runs and local release packaging
+.work/
+dist/
+*.pem
+*.key
+share.txt
+share.png
+client.json

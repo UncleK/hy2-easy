@@ -1,38 +1,193 @@
-# Personal Hysteria 2 gateway
+<p align="center">
+  <img src="docs/assets/banner.svg" alt="hy2-easy — 自己的 VPN，简单连接。安装、导入、连接。" width="100%">
+</p>
 
-This repository reconstructs the current Hetzner VPN deployment from a read-only
-server inspection on 2026-09-13. The GitHub repository retains its original
-`xray-personal-gateway` name, but now targets **Hysteria 2 v2.12.1 on UDP 24443**.
-Obsolete Xray code has been removed.
+<p align="center">
+  <a href="#开始使用">开始使用</a> ·
+  <a href="#连不上怎么办">遇到问题</a> ·
+  <a href="https://github.com/UncleK/hy2-easy/releases">下载</a> ·
+  <a href="LICENSE">MIT 开源</a>
+</p>
 
-The server uses password authentication, a self-signed TLS certificate, and an
-HTTP proxy masquerade. No control panel is involved.
+**把自己的云服务器变成一条个人 VPN 线路。** 安装一次，以后在客户端扫码或粘贴链接即可使用。
 
-## Quick start
+基于 Hysteria 2。无需管理面板，无需注册本站账户，也不用自己填写密码、证书或带宽参数。
 
-```powershell
-python -m pip install -r requirements-hysteria.txt
-python scripts/audit_hysteria.py root@YOUR_SERVER --identity C:\path\to\ssh-key
+> **已经有人把连接链接或二维码给你了？** 不需要安装服务器，直接跳到[第 4 步：在自己的设备上连接](#4-在自己的设备上连接)。
+
+## 开始使用
+
+### 1. 准备一台云服务器
+
+你需要有一台自己的 **VPS / 云服务器**，以及它的登录权限。
+这是你在云服务商那里购买的远程电脑，不是你现在用的 Windows 电脑。
+
+第一次创建服务器，系统可以选 **Ubuntu 24.04**。已有服务器也可以用：
+
+| 需要什么 | 怎么确认 |
+| --- | --- |
+| 支持的系统 | Ubuntu 22.04 / 24.04，或 Debian 12 / 13 |
+| 公网 IP | 在云服务器详情页找到「公网 IP」并复制 |
+| 管理员权限 | 能以 root 登录，或能使用 sudo |
+
+支持常见的 amd64 和 arm64 服务器，需要 systemd。还没有服务器的话，先完成这一步；本项目不提供免费线路。
+
+### 2. 给连接开一扇门
+
+在云服务器页面找到 **「防火墙」或「安全组」**，添加一条**入站 / 入方向**规则：
+
+| 页面上的项目 | 填什么 |
+| --- | --- |
+| 协议 | **UDP** |
+| 端口 | **24443** |
+| 来源 | 所有 IPv4 地址，通常写作 `0.0.0.0/0` |
+| 动作 | 允许 |
+
+保存，并确认规则已关联到这台服务器。不要选择 TCP，它和 UDP 是不同选项。
+如果你的服务器还启用了系统防火墙，也需要允许相同的 UDP 端口。
+
+<details>
+<summary>Ubuntu 开了 UFW 防火墙，怎么放行？</summary>
+
+在服务器终端执行：
+
+```bash
+sudo ufw allow 24443/udp
 ```
 
-To render a config, supply the existing password via `HYSTERIA_PASSWORD` in a
-private environment and run `python scripts/render_hysteria.py`. Output stays in
-Git-ignored `rendered/`. This command does not deploy anything.
+如果没有开启 UFW，不需要为了本项目额外开启。云服务商页面上的安全组仍需单独设置。
+使用 IPv6 地址连接时，还需允许相应的 IPv6 来源。
 
-See [operations and recovery](docs/hysteria-operations.md) for observed server
-paths, file permissions, backup requirements and deliberate deployment steps.
+</details>
 
-## Files
+### 3. 在服务器上粘贴这条安装命令
 
-- `infra/hysteria.config.template.yaml`: live configuration with a password placeholder.
-- `infra/hysteria-server.service`: observed production systemd unit.
-- `scripts/audit_hysteria.py`: read-only remote drift and service checks.
-- `scripts/render_hysteria.py`: private local config rendering.
-- `tests/test_hysteria.py`: credential substitution and rejection checks.
-- `state/`: local private backup notes; backup contents are ignored.
+在云服务器页面点 **「登录」「连接」或「终端」**，打开服务器的命令窗口。
+你也可以使用自己熟悉的 SSH 工具登录。
 
-Run tests with `python -m unittest discover -s tests -v`.
+**下面这条命令是在云服务器里运行，不是在自己电脑的 PowerShell 里运行。**
 
-Passwords, TLS keys, client artifacts and local backups are excluded from Git.
-The repository alone cannot restore the existing TLS identity; retain encrypted
-private backups of the live configuration, certificate and key.
+```bash
+curl -fsSLo hy2-easy-install.sh https://github.com/UncleK/hy2-easy/releases/download/v0.1.0/install.sh && sudo bash hy2-easy-install.sh
+```
+
+复制整行 → 粘贴到服务器终端 → 按回车。
+
+- 提示输入 sudo 密码时，输入服务器用户的密码并回车；输入时不显示字符是正常的。
+- 提示 **「服务器地址」** 时，粘贴第 1 步复制的公网 IP，再按回车。
+- 如果程序已经显示正确的公网 IP，直接回车即可。
+
+等到看到 **「[3/3] 安装完成 ✓」**，下面会出现二维码和一行以 `hysteria2://` 开头的链接。
+保留这个窗口，接下来要复制它。
+
+<details>
+<summary>提示 curl: command not found？</summary>
+
+先执行下面这条命令，再重新运行上面的安装命令：
+
+```bash
+sudo apt-get update && sudo apt-get install -y curl
+```
+
+</details>
+
+### 4. 在自己的设备上连接
+
+**有支持 Hysteria 2 的兼容客户端？** 打开它，扫描二维码或从剪贴板导入完整链接，然后开启连接即可。
+客户端需要支持链接里的证书指纹；首次使用建议先按下面的 Windows 步骤操作。
+
+#### Windows 电脑：跟着点就行
+
+1. **下载客户端：** [点击下载 v2rayN Windows x64 版](https://github.com/2dust/v2rayN/releases/latest/download/v2rayN-windows-64.zip)，适用于常见的 Intel / AMD、Windows 10 / 11 电脑。
+2. **打开客户端：** 右键下载的 ZIP →「全部解压」→ 打开解压后的文件夹 → 双击 `v2rayN.exe`。不要直接在压缩包里运行。
+3. **复制连接：** 回到服务器窗口，复制以 `hysteria2://` 开头的**完整一行**，不要把上下方说明一起复制。
+4. **导入：** 回到 v2rayN 主窗口，按 **Ctrl + V**。列表里应该出现一个叫 **hy2-easy** 的节点。
+5. **选中节点：** 点击这个节点并按 **Enter**，将它设为活动节点。
+6. **开启：** 找到 **「系统代理」**，选择 **「自动配置系统代理」**。
+7. **试一下：** 打开浏览器，访问你想使用的网站。能正常打开，就可以开始用了。
+
+以后再次使用，打开客户端并选中这个节点即可。暂时不用时，将系统代理设为 **「清除系统代理」**。
+
+其他电脑平台可在 [v2rayN 下载页](https://github.com/2dust/v2rayN/releases)选择对应版本。
+手机客户端参考[上游支持列表](https://v2.hysteria.network/docs/getting-started/3rd-party-apps/)；
+当前没有逐一完成手机扫码实测，不能保证任意客户端导入都相同。
+
+## 以后怎么用？
+
+在**服务器终端**输入这条命令，就会打开中文菜单：
+
+```bash
+sudo hy2-easy
+```
+
+```text
+  hy2-easy · 自己的 VPN，简单连接
+
+  1  连接新设备（显示二维码和链接）
+  2  看看服务是否正常
+  3  查看最近的错误信息
+  4  卸载 hy2-easy
+  0  退出
+
+  输入数字并按回车 [1]:
+```
+
+给另一台自己的设备使用时，选 **1**，再次扫码或复制链接即可。
+二维码显示不全也没关系，复制链接和扫码的作用相同。
+
+> 请保管好链接和二维码，它们就是你的连接凭据。不要放进公开截图或 Issue。
+
+## 连不上怎么办？
+
+| 看到的情况 | 先这样做 |
+| --- | --- |
+| 安装命令报错 | 确认在云服务器的 Linux 终端里运行，并使用上方支持的系统 |
+| 提示端口被占用 | 展开下面的「换个端口安装」，不需要停止原来的服务 |
+| 已经导入，但打不开网页 | 回看第 2 步，确认放行的是 **UDP 24443**；再检查客户端系统代理是否开启 |
+| 提示证书错误 | 更新兼容客户端，重新复制**完整链接**导入，不要手动删除链接里的参数 |
+| 某个软件仍然连不上 | 先用浏览器测试；有些软件不跟随系统代理，需要在该软件内设置代理 |
+| 想找回二维码 | 在服务器运行 `sudo hy2-easy`，选 **1** |
+
+<details>
+<summary>换个端口安装</summary>
+
+例如换成 `24444`：
+
+```bash
+sudo bash hy2-easy-install.sh --port 24444
+```
+
+这时第 2 步里的防火墙端口也要改成 **UDP 24444**。
+这是新安装选项，不能用它覆盖已有的 hy2-easy 配置。
+
+</details>
+
+确认以上步骤都正确仍不通时，可以[提交 Issue](https://github.com/UncleK/hy2-easy/issues)。
+写清楚服务器系统、客户端名称和错误文字；不要贴密码、完整链接或二维码。
+某些网络不支持 UDP/QUIC，换一个网络测试有助于判断原因。
+
+## 为什么这么简单？
+
+hy2-easy 只做一件事：**把个人连接需要的服务装好，并生成能导入的连接信息。**
+
+- 一个连接服务，没有管理面板、账户后台或订阅系统。
+- 密码、证书和二维码在你的服务器上生成，不上传给本项目。
+- 不附带广告组件或本项目的使用统计服务。
+- 使用固定版本的 Hysteria 2，代码公开，可查看、修改和卸载。
+
+自己的服务器由自己掌控。项目不承诺匿名性或任何环境都能连接；
+它是否接管某个软件的网络，取决于客户端设置。
+
+<details>
+<summary>维护、验证与开发资料</summary>
+
+- [安装路径、备份、卸载](docs/operations.md)
+- [数据去向与证书校验](docs/security.md)
+- [测试方法和已验证范围](docs/verification.md)
+- [参与开发](CONTRIBUTING.md)
+- [MIT 许可证](LICENSE)
+
+hy2-easy 0.1.0 固定使用 Hysteria 2.12.2，不自动升级上游核心。
+项目原名 `xray-personal-gateway`，旧实现保留在 Git 历史中。
+
+</details>
