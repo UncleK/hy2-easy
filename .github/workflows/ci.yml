@@ -43,7 +43,7 @@ jobs:
             --tmpfs /run --tmpfs /run/lock \
             --mount type=bind,source="$PWD",target=/src,readonly hy2-easy-test
           for i in $(seq 1 30); do
-            if docker exec hy2-easy-qa test -d /run/systemd/system; then exit 0; fi
+            if docker exec hy2-easy-qa systemctl is-active --quiet systemd-tmpfiles-setup.service; then exit 0; fi
             sleep 1
           done
           exit 1

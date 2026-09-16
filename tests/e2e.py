@@ -83,7 +83,8 @@ def main():
     target = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Target)
     threading.Thread(target=target.serve_forever, daemon=True).start()
     try:
-        with tempfile.TemporaryDirectory(prefix="hy2-easy-e2e-") as directory:
+        # systemd-tmpfiles may still be cleaning /tmp just after container boot.
+        with tempfile.TemporaryDirectory(prefix="hy2-easy-e2e-", dir="/root") as directory:
             temp = Path(directory)
             command("bash", str(ROOT / "install.sh"), "--host", "127.0.0.1")
             print("PASS: full installer + real systemd start", flush=True)
