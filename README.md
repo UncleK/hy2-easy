@@ -1,68 +1,114 @@
 <p align="center"><img src="docs/assets/banner.svg" alt="hy2-easy — 自己的 VPN，简单连接" width="100%"></p>
 
-**把自己的云服务器变成一条个人 VPN 线路。** 基于 Hysteria 2，配置好后扫码或复制链接即可使用。
+<p align="center"><strong>让 Agent 帮你配好，扫码或复制就能连接。</strong></p>
 
-## 让 Agent 帮你配置
+<p align="center">
+  <a href="#开始使用">开始使用</a> ·
+  <a href="https://github.com/UncleK/hy2-easy/releases">下载</a> ·
+  <a href="docs/manual-setup.md#连不上怎么办">遇到问题</a>
+</p>
 
-### 1. 把这段话复制给你的 Agent
+## 开始使用
 
-> 请按 https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md 接入 hy2-easy，帮我配置自己的 VPN。打开本机页面让我填写服务器登录信息，完成后给我二维码和客户端下载链接。不要让我在聊天里发送 SSH 密码或私钥。
+准备好**一台自己的云服务器**和**能执行本地工具的 Agent**，例如 DSH、WorkBuddy。
 
-使用能执行本地工具的 Agent，例如已启用本地工具的 DSH、WorkBuddy。普通聊天产品不一定能自动配置；接入范围见[说明](docs/agent.md)。
+**已经有连接链接或二维码？** 直接跳到[最后一步](#5-扫码或粘贴开始连接)。
 
-### 2. 打开 Agent 给出的页面，填写服务器信息
+### 1. 复制这段话，发给 Agent
 
-你需要一台自己的云服务器。找到它的 **公网 IP、用户名、密码或 SSH 私钥文件**，按页面填写，确认服务器身份后点“开始配置”。
+点击代码块右上角的复制按钮，粘贴到 Agent 的聊天窗口。
 
-服务器系统建议选 **Ubuntu 24.04**，防火墙 / 安全组放行 **UDP 24443**。没有服务器的话需要先准备一台，本项目不提供免费线路。
+```text
+帮我用 hy2-easy 配置自己的 VPN，请先阅读：
+https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
 
-### 3. 扫码，或复制链接
+打开本机页面，让我填写服务器登录信息，不要在聊天里索取密码或私钥。
+配置完成后，给我二维码、连接链接和客户端下载链接。
+```
 
-配置完成后，页面会给出客户端官方优先下载入口、二维码和复制按钮。
+### 2. 打开页面，填写信息
 
-- **Windows：** 下载并解压 v2rayN，打开后粘贴链接，选中线路，再开启系统代理。
-- **安卓：** 安装 v2rayNG，点 **+** 扫码或从剪贴板导入，再点连接。
-- **苹果 / Clash：** 展开“其他客户端”。Mihomo（Clash.Meta）提供配置文件导入；苹果端尚未真机验证。
+打开 Agent 给出的链接，把云服务商提供的登录信息填进去，然后点 **「下一步」**。
 
-Agent 能否在聊天中直接显示二维码取决于宿主；本机页面始终可以显示。不需要额外注册本项目账户。
+<sub>以下为真实界面的演示截图。请填自己的信息，不要照抄图中的地址或扫描示例二维码。</sub>
 
-**已经有连接链接？** 直接用客户端导入即可，不需要再装服务器。[客户端下载说明](docs/manual-setup.md#4-在自己的设备上连接)
+![填写服务器登录信息后，点击底部的下一步](docs/assets/setup/01-server.png)
+
+### 3. 确认是自己的服务器
+
+按页面提示核对身份，确认无误后，点 **「确认是我的服务器，开始配置」**。
+
+![核对服务器身份，点击确认是我的服务器并开始配置](docs/assets/setup/02-confirm.png)
+
+### 4. 等待配置完成
+
+看到这个页面就等一会儿，**保持 Agent 打开**，不用重复点击或重新安装。
+
+![正在自动配置，保持 Agent 打开并等待完成](docs/assets/setup/03-progress.png)
+
+### 5. 扫码或粘贴，开始连接
+
+先安装客户端，再添加刚刚生成的连接。
+
+| 你的设备 | 下载客户端 | 怎么添加连接 |
+| --- | --- | --- |
+| Windows 电脑 | [下载 v2rayN](https://github.com/2dust/v2rayN/releases/download/7.24.9/v2rayN-windows-64.zip) | 解压打开 → 复制链接 → 按 **Ctrl + V** 导入 → 选中线路并开启系统代理 |
+| 安卓手机 | [下载 v2rayNG](https://github.com/2dust/v2rayNG/releases/download/2.2.6/v2rayNG_2.2.6_arm64-v8a.apk) | 安装打开 → 点 **+** → 扫码或从剪贴板导入 → 点连接按钮 |
+
+**手机扫二维码，同一台设备就点「复制连接链接」。** 使用你自己配置页面里的连接信息。
+
+![用客户端扫描二维码，或者点击复制连接链接后导入](docs/assets/setup/04-connect.png)
+
+---
 
 <details>
-<summary>想自己动手？展开手动安装教程</summary>
+<summary>还没准备服务器？</summary>
 
-熟悉 SSH 和服务器操作的用户，也可以直接安装：
+本项目不提供免费线路，需要一台你自己的云服务器。新建时建议选 Ubuntu 24.04，并在云服务商的防火墙 / 安全组中放行 UDP 24443。
 
-1. 准备 Debian 12/13 或 Ubuntu 22.04/24.04 云服务器。
-2. 在云服务商的防火墙 / 安全组中放行 **UDP 24443**。
-3. 登录服务器，在 **Linux 服务器终端**运行下面的命令：
+不知道在哪里操作，可以把云服务商名称告诉 Agent，让它指引你；也可以查看[服务器准备说明](docs/manual-setup.md#1-准备一台云服务器)。
+
+</details>
+
+<details>
+<summary>苹果、Clash 或其他 Agent 能用吗？</summary>
+
+配置页面的「其他客户端」中有更多选择。Mihomo（Clash.Meta）可以下载配置文件导入；苹果端尚未真机验证，请参考[兼容客户端列表](https://v2.hysteria.network/docs/getting-started/3rd-party-apps/)。
+
+Agent 需要能运行本地工具。DSH、WorkBuddy 已提供接入配置，但各自聊天界面尚未完成实测。聊天中显示不了二维码时，回到本机页面即可。[查看接入说明](docs/agent.md)
+
+</details>
+
+<details>
+<summary>下载失败或连接不上？</summary>
+
+优先使用 GitHub 官方下载，打不开时查看[服务器备份站](https://agentschat.app/hy2-easy-downloads/)。当前备份提供本项目工具和检测组件，第三方客户端整包尚未镜像；海外备份也不保证所有网络都能直连。
+
+连接问题请按[排查步骤](docs/manual-setup.md#连不上怎么办)检查，或将错误文字发给 Agent。不要公开自己的密码、二维码或完整连接链接。
+
+</details>
+
+<details>
+<summary>想自己动手？展开手动安装</summary>
+
+在自己的 Linux 云服务器终端运行：
 
 ```bash
 curl -fsSLo hy2-easy-install.sh https://github.com/UncleK/hy2-easy/releases/download/v0.2.0/install.sh && sudo bash hy2-easy-install.sh
 ```
 
-按提示填写公网 IP，安装完成后用客户端扫码或复制链接导入即可。
-以后在服务器运行 `sudo hy2-easy`，可以查看二维码、服务状态或卸载。
+支持 Debian 12/13、Ubuntu 22.04/24.04。安装前放行 UDP 24443，按提示填写公网 IP，完成后扫码或复制链接导入。
 
-第一次手动安装、需要换端口或遇到连接问题，请查看[完整手动教程](docs/manual-setup.md)。
+[完整手动教程](docs/manual-setup.md) · [管理、备份与卸载](docs/operations.md)
 
 </details>
 
-## 为什么简单？
+<details>
+<summary>项目与开发资料</summary>
 
-只安装一个 Hysteria 2 连接服务，自动生成密码、证书和二维码。没有管理面板、账户后台或订阅系统，也没有本项目的广告或使用统计。
+hy2-easy 基于 Hysteria 2，简化的是安装和配置。没有管理面板、账户后台、广告或本项目的使用统计；不承诺匿名性或所有网络都能连接。
 
-简化的是安装和配置，不是自创协议。代码公开，可查看、修改和卸载；不承诺匿名性或所有网络都能连接。
-
-## 下载和帮助
-
-[GitHub 下载](https://github.com/UncleK/hy2-easy/releases) · [服务器备份](https://agentschat.app/hy2-easy-downloads/) · [连接问题](docs/manual-setup.md#连不上怎么办) · [Agent 接入](docs/agent.md)
-
-GitHub 官方优先。海外服务器备份不等于国内源；未验证大陆无代理直连。第三方客户端整包的组件授权尚在核对，当前备份站提供本项目工具和 Hysteria 检测组件，客户端仍链接官方发布页。
-
-<details><summary>维护与开发</summary>
-
-[运维](docs/operations.md) · [数据与证书](docs/security.md) · [验证范围](docs/verification.md) · [参与开发](CONTRIBUTING.md) · [MIT 许可证](LICENSE)
+[MIT 开源](LICENSE) · [数据与证书](docs/security.md) · [验证范围](docs/verification.md) · [参与开发](CONTRIBUTING.md)
 
 hy2-easy 0.2.0 使用 Hysteria 2.12.2。原名 `xray-personal-gateway`，旧实现保留在 Git 历史中。
 

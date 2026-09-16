@@ -4,7 +4,13 @@
 
 复制下面这段话给 Agent：
 
-> 请按 https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md 的“给 Agent 的接入说明”安装 hy2-easy 工具，帮我配置自己的 VPN。打开本机页面让我填写服务器信息，完成后给我二维码和适合我设备的客户端下载链接。不要在聊天里索取 SSH 密码或私钥。
+```text
+帮我用 hy2-easy 配置自己的 VPN，请先阅读：
+https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
+
+打开本机页面，让我填写服务器登录信息，不要在聊天里索取密码或私钥。
+配置完成后，给我二维码、连接链接和客户端下载链接。
+```
 
 然后跟着 Agent 给出的链接填写。第一次连接会显示服务器 SSH 指纹；在云服务商控制台核对并确认后，点“开始配置”。通常等几分钟，页面和支持图片的 Agent 就能显示二维码。扫码用 VPN 客户端里的扫一扫；在同一台设备上就复制链接导入。
 

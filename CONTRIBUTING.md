@@ -17,3 +17,5 @@ Agent 使用 Node 20+，运行 `cd agent && npm ci --ignore-scripts --omit=optio
 `python scripts/package_agent.py` 只打包明确列出的公共文件及已锁定 npm 依赖，不会包含本机生成的 Agent 配置或私有部署文件。
 发布前对解压后的包再次运行 MCP 握手检查。改动 SSH、表单授权或连接流程时运行隔离 SSH 集成测试。
 第三方客户端下载镜像应先核对原包及其所有附带组件的再分发条件；不能只检查主程序许可证。说明、源码与版本信息放在二进制旁边，校验完成后才能填入下载目录的 `backup`。
+
+更新教程截图时，运行 `node scripts/preview_docs.mjs --demo`，在浏览器打开输出的本机链接。此模式使用真实页面和虚构数据，不连接 SSH、不安装 VPN；拍完等待页面后，在启动它的终端按回车显示演示结果。截图先保存到 `output/playwright/`，检查后选入 `docs/assets/setup/`，不要拍摄真实凭据。演示结果不是联网测试证据。
