@@ -2,7 +2,7 @@
 
 **把自己的云服务器变成一条个人 VPN 线路。** 基于 Hysteria 2，配置好后扫码或复制链接即可使用。
 
-## 最简单的开始方式
+## 让 Agent 帮你配置
 
 ### 1. 把这段话复制给你的 Agent
 
@@ -28,9 +28,25 @@ Agent 能否在聊天中直接显示二维码取决于宿主；本机页面始�
 
 **已经有连接链接？** 直接用客户端导入即可，不需要再装服务器。[客户端下载说明](docs/manual-setup.md#4-在自己的设备上连接)
 
-## 不用 Agent 也可以
+<details>
+<summary>想自己动手？展开手动安装教程</summary>
 
-跟着[手动安装教程](docs/manual-setup.md)在服务器粘贴一条命令即可安装。
+熟悉 SSH 和服务器操作的用户，也可以直接安装：
+
+1. 准备 Debian 12/13 或 Ubuntu 22.04/24.04 云服务器。
+2. 在云服务商的防火墙 / 安全组中放行 **UDP 24443**。
+3. 登录服务器，在 **Linux 服务器终端**运行下面的命令：
+
+```bash
+curl -fsSLo hy2-easy-install.sh https://github.com/UncleK/hy2-easy/releases/download/v0.2.0/install.sh && sudo bash hy2-easy-install.sh
+```
+
+按提示填写公网 IP，安装完成后用客户端扫码或复制链接导入即可。
+以后在服务器运行 `sudo hy2-easy`，可以查看二维码、服务状态或卸载。
+
+第一次手动安装、需要换端口或遇到连接问题，请查看[完整手动教程](docs/manual-setup.md)。
+
+</details>
 
 ## 为什么简单？
 
