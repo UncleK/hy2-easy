@@ -1,24 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-labelledby="title desc">
-  <title id="title">hy2-easy：自己的 VPN，简单连接。</title>
-  <desc id="desc">一个服务，轻松连接。安装、导入、连接三个步骤。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="380" viewBox="0 0 1200 380" role="img" aria-labelledby="title desc">
+  <title id="title">hy2-easy — 让 Agent 帮你配好，扫码或复制就能连接。</title>
+  <desc id="desc">自己的 VPN，简单连接。右侧插画展示 Agent 配置完成后的连接卡片。</desc>
   <defs>
-    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#effcf7"/><stop offset="1" stop-color="#eff5ff"/></linearGradient>
-    <linearGradient id="accent" x2="1" y2="1"><stop stop-color="#0d9479"/><stop offset="1" stop-color="#2477cc"/></linearGradient>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#edf8f0"/><stop offset="1" stop-color="#eaf3f7"/></linearGradient>
+    <linearGradient id="accent" x2="1" y2="1"><stop stop-color="#257456"/><stop offset="1" stop-color="#164b40"/></linearGradient>
   </defs>
-  <rect width="1200" height="340" rx="28" fill="url(#bg)"/>
-  <circle cx="1150" cy="20" r="180" fill="#dcefe9" opacity=".55"/>
-  <circle cx="935" cy="315" r="110" fill="#dce8fc" opacity=".6"/>
+  <rect width="1200" height="380" rx="28" fill="url(#bg)"/>
+  <circle cx="1110" cy="65" r="215" fill="#d9ebe3" opacity=".6"/>
+  <circle cx="950" cy="365" r="185" fill="#deebf2" opacity=".7"/>
   <g font-family="Segoe UI,Microsoft YaHei,Noto Sans CJK SC,sans-serif">
-    <text x="66" y="74" font-size="15" letter-spacing="3" fill="#37665c">YOUR SERVER. YOUR CONNECTION.</text>
-    <text x="62" y="153" font-size="70" font-weight="700" letter-spacing="-2" fill="#173a37">hy2-easy</text>
-    <text x="66" y="207" font-size="29" fill="#244945">自己的 VPN，简单连接。</text>
-    <rect x="66" y="253" width="347" height="42" rx="21" fill="#fff" opacity=".85"/>
-    <text x="88" y="280" font-size="17" fill="#34635b">轻量部署 · 无需面板 · 开源透明</text>
-    <rect x="718" y="70" width="396" height="216" rx="24" fill="#fff"/>
-    <circle cx="753" cy="103" r="5" fill="#b3d9cb"/><circle cx="771" cy="103" r="5" fill="#d1e4dc"/><circle cx="789" cy="103" r="5" fill="#dfece7"/>
-    <path d="M781 180 H1050" stroke="#d9e8e1" stroke-width="3" stroke-dasharray="5 6"/>
-    <g fill="url(#accent)"><circle cx="786" cy="180" r="25"/><circle cx="916" cy="180" r="25"/><circle cx="1046" cy="180" r="25"/></g>
-    <g fill="#fff" font-size="22" text-anchor="middle" font-weight="600"><text x="786" y="188">1</text><text x="916" y="188">2</text><text x="1046" y="188">3</text></g>
-    <g fill="#33594f" font-size="18" text-anchor="middle"><text x="786" y="239">安装</text><text x="916" y="239">导入</text><text x="1046" y="239">连接</text></g>
+    <text x="64" y="66" font-size="20" fill="#507565">自己的 VPN，简单连接</text>
+    <text x="60" y="153" font-size="80" font-weight="750" letter-spacing="-3" fill="#183e33">hy2-easy</text>
+    <text x="64" y="222" font-size="34" font-weight="600" fill="#214a3e">让 Agent 帮你配好，</text>
+    <text x="64" y="270" font-size="34" font-weight="600" fill="#214a3e">扫码或复制就能连接。</text>
+    <circle cx="70" cy="326" r="5" fill="#4b8a6a"/>
+    <text x="85" y="332" font-size="19" fill="#547362">轻量 · 简单 · 开源</text>
+    <rect x="738" y="77" width="374" height="246" rx="25" fill="#b7d1c5" opacity=".2"/>
+    <rect x="728" y="65" width="374" height="246" rx="25" fill="#fff" stroke="#dbe9e1"/>
+    <rect x="753" y="90" width="42" height="42" rx="13" fill="url(#accent)"/>
+    <path d="M774 99 V123 M762 111 H786 M766 103 L782 119 M782 103 L766 119" stroke="#e1f3e7" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="810" y="109" font-size="18" font-weight="600" fill="#214a3e">Agent</text>
+    <text x="810" y="132" font-size="16" fill="#698173">已帮你配置好</text>
+    <path d="M753 153 H1077" stroke="#eaf0eb"/>
+    <rect x="753" y="176" width="83" height="83" rx="18" fill="#eef6f0"/>
+    <g fill="none" stroke="#357257" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M772 198 V193 H781 M808 193 H817 V202 M817 233 V242 H808 M781 242 H772 V233"/>
+      <rect x="783" y="204" width="23" height="27" rx="4"/>
+      <path d="M778 217 H811"/>
+    </g>
+    <text x="855" y="204" font-size="23" font-weight="600" fill="#214a3e">准备好连接了</text>
+    <text x="855" y="232" font-size="17" fill="#698173">扫一扫，或者复制链接</text>
+    <rect x="855" y="251" width="151" height="35" rx="17.5" fill="#e7f2e9"/>
+    <path d="M872 268 L877 273 L885 263" fill="none" stroke="#367453" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="895" y="274" font-size="16" fill="#367453">就是这么简单</text>
   </g>
 </svg>

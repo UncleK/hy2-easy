@@ -1,18 +1,10 @@
-<p align="center"><img src="docs/assets/banner.svg" alt="hy2-easy — 自己的 VPN，简单连接" width="100%"></p>
-
-<p align="center"><strong>让 Agent 帮你配好，扫码或复制就能连接。</strong></p>
-
-<p align="center">
-  <a href="#开始使用">开始使用</a> ·
-  <a href="https://github.com/UncleK/hy2-easy/releases">下载</a> ·
-  <a href="docs/manual-setup.md#连不上怎么办">遇到问题</a>
-</p>
+<p align="center"><img src="docs/assets/banner.svg" alt="hy2-easy — 让 Agent 帮你配好，扫码或复制就能连接。" width="100%"></p>
 
 ## 开始使用
 
 准备好**一台自己的云服务器**和**能执行本地工具的 Agent**，例如 DSH、WorkBuddy。
 
-**已经有连接链接或二维码？** 直接跳到[最后一步](#5-扫码或粘贴开始连接)。
+**已经有连接链接或二维码？** 直接[下载客户端](#下载客户端)。
 
 ### 1. 复制这段话，发给 Agent
 
@@ -26,29 +18,40 @@ https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
 配置完成后，给我二维码、连接链接和客户端下载链接。
 ```
 
-### 2. 打开页面，填写信息
+### 2–5. 跟着页面完成连接
 
-打开 Agent 给出的链接，把云服务商提供的登录信息填进去，然后点 **「下一步」**。
+打开 Agent 给出的链接，按下面的顺序操作。服务器用密钥登录？把「登录方式」切换为 **「私钥文件登录」** 即可。
 
-<sub>以下为真实界面的演示截图。请填自己的信息，不要照抄图中的地址或扫描示例二维码。</sub>
+<sub>以下为真实界面的演示截图。请填自己的信息，不要照抄图中的地址或扫描示例二维码。点击图片可放大。</sub>
 
-![填写服务器登录信息后，点击底部的下一步](docs/assets/setup/01-server.png)
+<table>
+<tr>
+<td width="50%" valign="top">
+<h3>② 填写信息</h3>
+<p>填入云服务商提供的登录信息，点「下一步」。</p>
+<img src="docs/assets/setup/01-server.png" alt="填写服务器登录信息后，点击底部的下一步" width="360">
+</td>
+<td width="50%" valign="top">
+<h3>③ 确认服务器</h3>
+<p>按提示核对身份，点「确认是我的服务器，开始配置」。</p>
+<img src="docs/assets/setup/02-confirm.png" alt="核对服务器身份，确认后开始配置" width="360">
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<h3>④ 等待完成</h3>
+<p>保持 Agent 打开，等一会儿，不用重复点击。</p>
+<img src="docs/assets/setup/03-progress.png" alt="正在自动配置，保持 Agent 打开并等待完成" width="360">
+</td>
+<td width="50%" valign="top">
+<h3>⑤ 扫码或粘贴</h3>
+<p>安装下方的客户端，扫码或复制链接导入，再开启连接。</p>
+<img src="docs/assets/setup/04-connect.png" alt="用客户端扫码，或点击复制连接链接后导入" width="360">
+</td>
+</tr>
+</table>
 
-### 3. 确认是自己的服务器
-
-按页面提示核对身份，确认无误后，点 **「确认是我的服务器，开始配置」**。
-
-![核对服务器身份，点击确认是我的服务器并开始配置](docs/assets/setup/02-confirm.png)
-
-### 4. 等待配置完成
-
-看到这个页面就等一会儿，**保持 Agent 打开**，不用重复点击或重新安装。
-
-![正在自动配置，保持 Agent 打开并等待完成](docs/assets/setup/03-progress.png)
-
-### 5. 扫码或粘贴，开始连接
-
-先安装客户端，再添加刚刚生成的连接。
+### 下载客户端
 
 | 你的设备 | 下载客户端 | 怎么添加连接 |
 | --- | --- | --- |
@@ -56,8 +59,6 @@ https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
 | 安卓手机 | [下载 v2rayNG](https://github.com/2dust/v2rayNG/releases/download/2.2.6/v2rayNG_2.2.6_arm64-v8a.apk) | 安装打开 → 点 **+** → 扫码或从剪贴板导入 → 点连接按钮 |
 
 **手机扫二维码，同一台设备就点「复制连接链接」。** 使用你自己配置页面里的连接信息。
-
-![用客户端扫描二维码，或者点击复制连接链接后导入](docs/assets/setup/04-connect.png)
 
 ---
 
