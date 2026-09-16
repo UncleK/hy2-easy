@@ -30,6 +30,7 @@ https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
 <h3>② 填写信息</h3>
 <p>填入云服务商提供的登录信息，点「下一步」。</p>
 <img src="docs/assets/setup/01-server.png" alt="填写服务器登录信息后，点击底部的下一步" width="360">
+<hr>
 <h3>④ 等待完成</h3>
 <p>保持 Agent 打开，等一会儿，不用重复点击。</p>
 <img src="docs/assets/setup/03-progress.png" alt="正在自动配置，保持 Agent 打开并等待完成" width="360">
@@ -38,6 +39,7 @@ https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
 <h3>③ 确认服务器</h3>
 <p>按提示核对身份，点「确认是我的服务器，开始配置」。</p>
 <img src="docs/assets/setup/02-confirm.png" alt="核对服务器身份，确认后开始配置" width="360">
+<hr>
 <h3>⑤ 扫码或粘贴</h3>
 <p>安装下方的客户端，扫码或复制链接导入，再开启连接。</p>
 <img src="docs/assets/setup/04-connect.png" alt="用客户端扫码，或点击复制连接链接后导入" width="360">
