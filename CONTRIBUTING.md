@@ -11,4 +11,9 @@
 如报告连接问题，请提供操作系统、客户端版本与已脱敏的错误信息，不要上传二维码或原始配置。
 
 发布新版本时同步 Python/Bash 版本号、README 固定下载链接和核心校验和；
-从已通过 CI 的提交创建标签，并附带 `install.sh` 和 `SHA256SUMS`。
+从已通过 CI 的提交创建标签，并附带 `install.sh`、Agent 分发包和 `SHA256SUMS`。
+
+Agent 使用 Node 20+，运行 `cd agent && npm ci --ignore-scripts --omit=optional && npm test`。
+`python scripts/package_agent.py` 只打包明确列出的公共文件及已锁定 npm 依赖，不会包含本机生成的 Agent 配置或私有部署文件。
+发布前对解压后的包再次运行 MCP 握手检查。改动 SSH、表单授权或连接流程时运行隔离 SSH 集成测试。
+第三方客户端下载镜像应先核对原包及其所有附带组件的再分发条件；不能只检查主程序许可证。说明、源码与版本信息放在二进制旁边，校验完成后才能填入下载目录的 `backup`。

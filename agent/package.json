@@ -1,0 +1,9 @@
+{
+  "name": "hy2-easy-agent",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=20"},
+  "scripts": {"start": "node src/mcp.mjs", "test": "node --test tests/*.test.mjs"},
+  "dependencies": {"@modelcontextprotocol/sdk": "1.30.0", "qrcode": "1.5.4", "ssh2": "1.17.0", "zod": "3.25.76"}
+}

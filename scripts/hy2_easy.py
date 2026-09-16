@@ -18,7 +18,7 @@ import tempfile
 import time
 from urllib.parse import quote, urlencode
 
-VERSION = "0.1.1"
+VERSION = "0.2.0"
 CORE_VERSION = "2.12.2"
 CORE_HASHES = {
     "x86_64": ("amd64", "6493dfffd55b5883f64c76c63880ecc32988f0c568c9ca9014907877b4d55f94"),
@@ -128,9 +128,16 @@ def write_json(path, value, mode=0o600):
 def core_download(target):
     arch, expected = CORE_HASHES[platform.machine()]
     url = f"https://github.com/HyNetworks/hysteria/releases/download/app/v{CORE_VERSION}/hysteria-linux-{arch}"
-    run("curl", "--fail", "--location", "--silent", "--show-error", "--proto", "=https",
-        "--proto-redir", "=https", "--connect-timeout", "15", "--max-time", "300",
-        "--retry", "2", "--output", str(target), url)
+    backup = f"https://agentschat.app/hy2-easy-downloads/hysteria-{CORE_VERSION}/hysteria-linux-{arch}"
+    for index, address in enumerate((url, backup)):
+        try:
+            run("curl", "--fail", "--location", "--silent", "--show-error", "--proto", "=https",
+                "--proto-redir", "=https", "--connect-timeout", "15", "--max-time", "90",
+                "--output", str(target), address)
+            break
+        except subprocess.CalledProcessError:
+            if index == 1:
+                raise
     if hashlib.sha256(target.read_bytes()).hexdigest() != expected:
         target.unlink()
         raise ValueError("Hysteria 下载校验失败，未安装")
@@ -279,7 +286,8 @@ def install(args):
     print(f"  请确认云服务器已放行 UDP {args.port}。")
     print("  接下来：打开客户端 → 扫码或粘贴下面的链接 → 开启连接。")
     print("  Windows 用户：导入 v2rayN 后，开启「系统代理」。\n")
-    share()
+    if not getattr(args, "no_share", False):
+        share()
 
 
 def installed_state():
@@ -304,9 +312,12 @@ def export_files():
     png.chmod(0o600)
 
 
-def share():
+def share(as_json=False):
     installed_state()
     uri = (ETC / "share.txt").read_text().strip()
+    if as_json:
+        print(json.dumps({"uri": uri, "client": json.loads((ETC / "client.json").read_text())}))
+        return
     if sys.stdout.isatty():
         run("qrencode", "-t", "ANSIUTF8", input=uri, text=True)
     print("  ── 复制下面这一整行，从 hysteria2:// 开始 ──\n")
@@ -356,7 +367,9 @@ def main():
     setup = commands.add_parser("install", help="安装到一台新的 Linux 服务器")
     setup.add_argument("--host", help="服务器公网 IP 或域名")
     setup.add_argument("--port", type=int, default=24443, help="UDP 端口，默认 24443")
-    commands.add_parser("share", help="显示二维码和连接链接")
+    setup.add_argument("--no-share", action="store_true", help="安装完成时不输出连接凭据")
+    share_parser = commands.add_parser("share", help="显示二维码和连接链接")
+    share_parser.add_argument("--json", action="store_true", help="输出包含连接凭据的 JSON，仅供本地工具读取")
     commands.add_parser("status", help="查看服务状态")
     commands.add_parser("logs", help="查看最近的本地服务日志")
     remove = commands.add_parser("uninstall", help="卸载服务并删除连接凭据")
@@ -381,7 +394,7 @@ def main():
         if args.command == "install":
             install(args)
         elif args.command == "share":
-            share()
+            share(getattr(args, "json", False))
         elif args.command == "status":
             return subprocess.run(["systemctl", "status", "--no-pager", SERVICE]).returncode
         elif args.command == "logs":

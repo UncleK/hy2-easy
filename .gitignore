@@ -30,3 +30,7 @@ dist/
 share.txt
 share.png
 client.json
+node_modules/
+agent/configured/
+output/playwright/
+.playwright-cli/

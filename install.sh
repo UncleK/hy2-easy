@@ -2,8 +2,8 @@
 set -euo pipefail
 umask 077
 
-HY2_EASY_VERSION='0.1.1'
-TOOL_SHA256='a8a329f17c7be7d3cb540e8c18c27a78f745491b698234890c8a5e87d7dcafca'
+HY2_EASY_VERSION='0.2.0'
+TOOL_SHA256='1f81859de8aa1a42d20d15ab3ea3fba3add8c1ac9be1aaced0bb36a321f537c5'
 
 if [[ ${1:-} == '--help' ]]; then
     echo 'Usage: sudo bash install.sh [--host SERVER_IP_OR_DOMAIN] [--port 24443]'

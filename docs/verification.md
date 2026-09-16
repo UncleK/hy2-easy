@@ -7,6 +7,12 @@
 
 ## 自动验证
 
+0.2.0 新增 Agent 检查：本机 Windows Node 测试覆盖 MCP stdio 握手与四个工具、表单跨站拒绝、SSH 身份确认顺序、重复提交、凭据不出现在状态中、选择仅本机显示、下载校验与回退、Windows DACL 和 Mihomo 配置生成。
+在一次性 Debian 12/systemd/sshd 容器中完成真实 SSH 安装；Windows 本机通过安装结果建立 QUIC 隧道并取得 HTTPS 204。首次检测组件下载失败被标记为未验证，加入已核对的服务器备用下载后重新完成真实联网检测。
+Playwright 操作了本机表单、确认步骤、二维码结果、剪贴板复制及 Mihomo 配置下载，检查了桌面和 390px 移动布局。测试凭据仅属于已销毁的隔离环境，截图不放入公开仓库。
+
+DSH 和 WorkBuddy 接入文件依据其接口说明生成并检查结构，尚未完成两个宿主的实际聊天 UI 验收。苹果未做真机测试；不能据此声称任意 Agent 或客户端均兼容。
+
 - 单元测试：地址及 IPv6 链接编码、特殊字符密码、证书指纹约束、损坏下载拒绝、权限与覆盖保护、发布脚本校验和。
 - Bash 语法与 ShellCheck。
 - 一次性 Linux/systemd 容器：执行完整安装脚本，以真实 Hysteria 2.12.2 运行。
@@ -46,3 +52,9 @@ v2rayN 的上游 `Hysteria2Fmt.ResolveHy2UriQuery` 实现会导入 `pinSHA256`�
 仍需要在对应客户端版本与真实设备上验证。完整分享链接是使用前提。
 
 本项目不会因服务显示 active 就宣称公网访问成功，也不将隔离环境测试当作公网吞吐或长期稳定性测试。
+
+## Agent 测试复现
+
+在 `agent` 目录执行 `npm ci --ignore-scripts --omit=optional` 与 `npm test`。
+`agent/tests/integration.mjs --disposable-container` 专用于名为 `hy2-easy-agent-qa` 的一次性测试容器：本机映射 SSH 22222/TCP、VPN 24444/UDP，容器 SSH 用户 root，密码为脚本中的公开测试值。端口只绑定本机回环地址；不要在公网服务器设置这个测试账户。
+容器需运行 systemd、sshd、Python、qrencode、zbar；测试会安装服务并检测真实隧道与二维码解码。结束后删除该测试容器。

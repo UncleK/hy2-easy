@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>hy2-easy · 连接从这里开始</title><link rel="stylesheet" href="/style.css"><script type="module" src="/app.js"></script></head>
+<body><main><header><span class="mark">h₂</span><span>hy2-easy</span><span class="local">只在本机填写</span></header>
+<section class="intro"><p class="eyebrow">自己的 VPN，简单连接</p><h1>把剩下的配置<br>交给我们。</h1><p>准备好云服务器的登录信息。完成后，扫码或复制链接就能添加到客户端。</p></section>
+<ol class="steps" aria-label="配置步骤"><li class="current">1 填写信息</li><li>2 自动配置</li><li>3 扫码连接</li></ol>
+<section class="card" id="setup"><h2>你的云服务器</h2><p class="muted">这些信息可以在购买服务器的平台找到。密码和私钥不会被本工具发送到聊天中。</p>
+<form id="form"><label>服务器 IP<input id="host" name="host" placeholder="例如 203.0.113.10" required autocomplete="off" spellcheck="false"></label>
+<div class="row"><label>登录用户名<input name="username" value="root" required autocomplete="off"></label><label>SSH 端口<input name="sshPort" type="number" value="22" min="1" max="65535" required></label></div>
+<label>登录方式<select id="method"><option value="password">密码登录</option><option value="key">私钥文件登录</option></select></label>
+<label id="password-label">服务器密码<input name="password" type="password" autocomplete="off"></label>
+<div id="key-fields" hidden><label>选择私钥文件<input id="key" type="file"></label><label>私钥密码（没有就留空）<input name="passphrase" type="password" autocomplete="off"></label></div>
+<details><summary>更多设置</summary><label>VPN 公网地址（通常不用改）<input name="publicHost" placeholder="默认使用上面的服务器 IP" autocomplete="off"></label><label>VPN 的 UDP 端口<input name="vpnPort" type="number" value="24443" min="1024" max="65535"></label><p class="muted">云服务器的防火墙 / 安全组需要允许这个 UDP 端口。</p></details>
+<label class="check"><input name="shareInAgent" type="checkbox" checked><span>完成后，也在 Agent 聊天里显示二维码和连接链接<small>它们是 VPN 的连接凭据，会进入该 Agent 的会话记录。取消勾选则只在本页查看。</small></span></label>
+<button type="submit" id="inspect">下一步</button></form>
+<div id="trust" hidden><h3>确认一下服务器身份</h3><p>这是第一次连接。请与云服务商控制台提供的 SSH 指纹核对；确认地址和身份后再开始安装。</p><code id="fingerprint"></code><button id="install">确认是我的服务器，开始配置</button><button class="secondary" id="back">返回修改</button></div></section>
+<section class="card" id="progress" hidden><div class="spinner" aria-hidden="true"></div><h2>正在为你配置</h2><p id="progress-text" role="status"></p><p class="muted">可以回到 Agent 聊天查看进度。请保持 Agent 运行。</p></section>
+<section class="card" id="result" hidden><span class="badge" id="verified-label"></span><h2>添加到你的设备</h2><p id="result-message"></p><div class="connection"><img id="qr" width="280" height="280" alt="在 VPN 客户端内扫描此二维码"><div><h3>扫码，或者复制链接</h3><p>用手机上的 VPN 客户端扫码。同一台设备上操作，直接复制链接。</p><button id="copy">复制连接链接</button><textarea id="uri" readonly aria-label="VPN 连接链接"></textarea><p class="muted">链接属于你，请只分享给信任的人。</p></div></div>
+<h3>还没有客户端？</h3><div id="downloads"></div><details><summary>苹果 / Clash / 其他客户端</summary><p>苹果端尚未真机验证，请选支持 Hysteria 2 与证书指纹的软件。</p><p><a href="https://v2.hysteria.network/docs/getting-started/3rd-party-apps/" target="_blank" rel="noreferrer">查看官方兼容列表 ↗</a></p><p>Mihomo（Clash.Meta）用户：下载配置文件，在客户端的「配置」中导入，再开启系统代理。默认通过 VPN 访问公网。</p><button class="secondary" id="mihomo">下载 Mihomo 配置</button></details></section>
+<div id="error" role="alert" hidden></div><footer>基于 Hysteria 2 · 无账户注册 · 二维码在本机生成<br>关闭 Agent 或闲置 30 分钟后，本页的连接信息会失效。服务器上的 VPN 仍可继续使用。</footer></main></body></html>
