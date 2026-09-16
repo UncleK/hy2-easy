@@ -10,7 +10,6 @@
 <label id="password-label">服务器密码<input name="password" type="password" autocomplete="off"></label>
 <div id="key-fields" hidden><label>选择私钥文件<input id="key" type="file"></label><label>私钥密码（没有就留空）<input name="passphrase" type="password" autocomplete="off"></label></div>
 <details><summary>更多设置</summary><label>VPN 公网地址（通常不用改）<input name="publicHost" placeholder="默认使用上面的服务器 IP" autocomplete="off"></label><label>VPN 的 UDP 端口<input name="vpnPort" type="number" value="24443" min="1024" max="65535"></label><p class="muted">云服务器的防火墙 / 安全组需要允许这个 UDP 端口。</p></details>
-<label class="check"><input name="shareInAgent" type="checkbox" checked><span>完成后，也在 Agent 聊天里显示二维码和连接链接<small>它们是 VPN 的连接凭据，会进入该 Agent 的会话记录。取消勾选则只在本页查看。</small></span></label>
 <button type="submit" id="inspect">下一步</button></form>
 <div id="trust" hidden><h3>确认一下服务器身份</h3><p>这是第一次连接。请与云服务商控制台提供的 SSH 指纹核对；确认地址和身份后再开始安装。</p><code id="fingerprint"></code><button id="install">确认是我的服务器，开始配置</button><button class="secondary" id="back">返回修改</button></div></section>
 <section class="card" id="progress" hidden><div class="spinner" aria-hidden="true"></div><h2>正在为你配置</h2><p id="progress-text" role="status"></p><p class="muted">可以回到 Agent 聊天查看进度。请保持 Agent 运行。</p></section>

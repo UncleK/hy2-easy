@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build the offline-dependency Agent zip from explicit public input directories."""
 import hashlib
+import json
 from pathlib import Path
 import zipfile
 
@@ -9,7 +10,8 @@ OUT = ROOT / 'dist'
 def main():
     assert (ROOT/'agent/node_modules/@modelcontextprotocol/sdk/package.json').is_file(), 'Run npm ci --ignore-scripts --omit=optional in agent first'
     OUT.mkdir(exist_ok=True)
-    archive = OUT/'hy2-easy-agent-v0.2.0.zip'
+    version = json.loads((ROOT/'agent/package.json').read_text())['version']
+    archive = OUT/f'hy2-easy-agent-v{version}.zip'
     paths = [ROOT/'LICENSE', ROOT/'README.md', ROOT/'install.sh', ROOT/'scripts/hy2_easy.py', ROOT/'docs/agent.md',
              ROOT/'agent/package.json', ROOT/'agent/package-lock.json', ROOT/'agent/configure.mjs']
     for directory in ['docs', 'agent/src', 'agent/ui', 'agent/adapters', 'agent/node_modules']:

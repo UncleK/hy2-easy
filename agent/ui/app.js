@@ -19,7 +19,6 @@ function render(s) {
 async function poll() { try { render(await api('status')); } catch (e) { clearInterval(timer); error(e); } }
 async function readInput() {
   const values = Object.fromEntries(new FormData($('form')));
-  values.shareInAgent = $('form').elements.shareInAgent.checked;
   if ($('method').value === 'key') {
     if (!$('key').files[0]) throw new Error('请选择私钥文件');
     if ($('key').files[0].size > 65536) throw new Error('私钥文件过大，请确认选择正确');

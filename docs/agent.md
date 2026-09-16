@@ -20,8 +20,8 @@ https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
 
 下载固定版本分发包：
 
-- [GitHub：hy2-easy-agent-v0.2.0.zip](https://github.com/UncleK/hy2-easy/releases/download/v0.2.0/hy2-easy-agent-v0.2.0.zip)
-- [服务器备份与校验值](https://agentschat.app/hy2-easy-downloads/)
+- [GitHub：hy2-easy-agent-v0.2.1.zip](https://github.com/UncleK/hy2-easy/releases/download/v0.2.1/hy2-easy-agent-v0.2.1.zip)
+- [服务器备份与校验值（当前为 0.2.0，保留旧版显示勾选项）](https://agentschat.app/hy2-easy-downloads/)
 
 解压后得到 `hy2-easy` 目录。里面已包含 npm 运行依赖，不需要现场访问 npm 安装。使用宿主提供的 Node.js 20+ 执行 `node agent/configure.mjs`，它会生成符合当前解压位置的配置文件：
 
@@ -30,7 +30,7 @@ https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
 | DSH | 将 `agent/configured/dsh-plugins.yaml` 中的插件项合入所用 profile 的插件配置，保持原配置其他项。需要 `@deepseek-ai/dsh-mcp-client` 插件可用。 |
 | WorkBuddy 5.0+ | 使用 `agent/configured/workbuddy` 目录中的连接器配置；其中声明托管 Node 22 运行时。也可在本地 MCP 设置中使用生成的 `mcp.json`。 |
 | 其他本地 MCP Agent | 按该宿主的配置格式导入 `agent/configured/mcp.json` 中的 stdio 命令和参数。 |
-| 只有本地终端执行能力 | 后台运行 `node agent/src/standalone.mjs`，将输出的本机链接交给用户；保持进程存活。页面显示二维码，完成后的终端输出只返回用户选择分享到聊天的文字信息。 |
+| 只有本地终端执行能力 | 后台运行 `node agent/src/standalone.mjs`，将输出的本机链接交给用户；保持进程存活。页面显示二维码，完成后的终端输出返回连接链接与页面地址，由 Agent 展示给用户。 |
 
 宿主缺少 Node 时，应先检查其托管运行时。WorkBuddy 的 MCP 配置可使用它自己的托管 Node；生成配置前也可由 Agent 直接把 `command=node`、`args=[解压后 agent/src/mcp.mjs 的绝对路径]` 填入本地 MCP 设置。不能假设所有 Agent 都自带 Node。
 

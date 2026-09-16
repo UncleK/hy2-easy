@@ -20,7 +20,7 @@ https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
 
 ### 2–5. 跟着页面完成连接
 
-打开 Agent 给出的链接，按下面的顺序操作。服务器用密钥登录？把「登录方式」切换为 **「私钥文件登录」** 即可。
+打开 Agent 给出的链接，按 **② → ③ → ④ → ⑤** 操作。服务器用密钥登录？把「登录方式」切换为 **「私钥文件登录」** 即可。
 
 <sub>以下为真实界面的演示截图。请填自己的信息，不要照抄图中的地址或扫描示例二维码。点击图片可放大。</sub>
 
@@ -30,20 +30,14 @@ https://github.com/UncleK/hy2-easy/blob/main/docs/agent.md
 <h3>② 填写信息</h3>
 <p>填入云服务商提供的登录信息，点「下一步」。</p>
 <img src="docs/assets/setup/01-server.png" alt="填写服务器登录信息后，点击底部的下一步" width="360">
-</td>
-<td width="50%" valign="top">
-<h3>③ 确认服务器</h3>
-<p>按提示核对身份，点「确认是我的服务器，开始配置」。</p>
-<img src="docs/assets/setup/02-confirm.png" alt="核对服务器身份，确认后开始配置" width="360">
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
 <h3>④ 等待完成</h3>
 <p>保持 Agent 打开，等一会儿，不用重复点击。</p>
 <img src="docs/assets/setup/03-progress.png" alt="正在自动配置，保持 Agent 打开并等待完成" width="360">
 </td>
 <td width="50%" valign="top">
+<h3>③ 确认服务器</h3>
+<p>按提示核对身份，点「确认是我的服务器，开始配置」。</p>
+<img src="docs/assets/setup/02-confirm.png" alt="核对服务器身份，确认后开始配置" width="360">
 <h3>⑤ 扫码或粘贴</h3>
 <p>安装下方的客户端，扫码或复制链接导入，再开启连接。</p>
 <img src="docs/assets/setup/04-connect.png" alt="用客户端扫码，或点击复制连接链接后导入" width="360">
@@ -111,6 +105,6 @@ hy2-easy 基于 Hysteria 2，简化的是安装和配置。没有管理面板、
 
 [MIT 开源](LICENSE) · [数据与证书](docs/security.md) · [验证范围](docs/verification.md) · [参与开发](CONTRIBUTING.md)
 
-hy2-easy 0.2.0 使用 Hysteria 2.12.2。原名 `xray-personal-gateway`，旧实现保留在 Git 历史中。
+Agent 最新版为 0.2.1，安装工具为 0.2.0，使用 Hysteria 2.12.2。原名 `xray-personal-gateway`，旧实现保留在 Git 历史中。
 
 </details>

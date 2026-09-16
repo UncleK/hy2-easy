@@ -13,7 +13,7 @@ try {
     const data = await r.json(); assert.ok(r.ok, data.error); return data;
   };
   const input = {host: '127.0.0.1', sshPort: 22222, publicHost: '127.0.0.1', vpnPort: 24444,
-    username: 'root', password: 'hy2-easy-disposable-test', shareInAgent: true};
+    username: 'root', password: 'hy2-easy-disposable-test'};
   const inspected = await call('inspect', input); assert.match(inspected.fingerprint, /^SHA256:/);
   await assert.rejects(deploy(input, 'SHA256:wrong', () => {}), /指纹/);
   await call('install', {...input, fingerprint: inspected.fingerprint});

@@ -11,7 +11,7 @@ import http from 'node:http';
 
 const uri = 'hysteria2://test-only%3A%40%2F@127.0.0.1:24443/?sni=hy2-easy.local&insecure=1&pinSHA256=' + 'ab'.repeat(32) + '#hy2-easy';
 const input = {host: '127.0.0.1', username: 'root', password: 'test-only-secret'};
-test('local form, host trust, async job, credentials and QR consent', async () => {
+test('local form, host trust, async job and matching web/Agent connection results', async () => {
   let deployed = 0, release;
   const gate = new Promise(r => { release = r; });
   const app = await createApp({inspectHost: async () => 'SHA256:test-only', deploy: async (value, pin) => {
@@ -34,16 +34,20 @@ test('local form, host trust, async job, credentials and QR consent', async () =
     assert.equal((await request('inspect', input)).status, 200);
     assert.equal((await request('install', {...input, fingerprint: 'wrong'})).status, 409);
     assert.equal((await request('install', {...input, host: 'other.example', fingerprint: 'SHA256:test-only'})).status, 409);
-    assert.equal((await request('install', {...input, fingerprint: 'SHA256:test-only', shareInAgent: false})).status, 202);
+    assert.equal((await request('install', {...input, fingerprint: 'SHA256:test-only'})).status, 202);
     assert.equal((await request('install', {...input, fingerprint: 'SHA256:test-only'})).status, 409);
     assert.equal(deployed, 1);
     assert.ok(!JSON.stringify(app.status(s.id)).includes('test-only-secret'));
     release();
     for (let i = 0; i < 50 && app.status(s.id).stage !== 'done'; i++) await new Promise(r => setTimeout(r, 20));
     assert.equal(app.status(s.id).stage, 'done');
-    assert.ok(!JSON.stringify(app.connection(s.id)).includes('hysteria2://'));
     const result = await (await request('result')).json();
     assert.equal(result.uri, uri); assert.match(result.qr, /^data:image\/png;base64,iVBOR/);
+    const connection = app.connection(s.id);
+    assert.equal(JSON.parse(connection.content[0].text).uri, result.uri);
+    assert.equal(connection.content[1].type, 'image');
+    assert.equal(connection.content[1].data, result.qr.split(',')[1]);
+    assert.ok(!JSON.stringify(connection).includes('test-only-secret'));
     assert.equal(JSON.parse(result.mihomo).proxies[0].fingerprint, 'ab'.repeat(32));
     assert.ok(!JSON.stringify(result).includes('test-only-secret'));
   } finally { release(); await app.close(); }

@@ -58,7 +58,6 @@ export async function createApp(backend = {inspectHost, deploy, verifyConnection
         if (session.stage !== 'trust' || value.fingerprint !== session.fingerprint) return send(409, {error: '请先确认服务器指纹'});
         const input = validateInput(value);
         if (input.host !== session.host || input.sshPort !== session.sshPort) return send(409, {error: '地址已修改，请重新检查服务器身份'});
-        session.shareInAgent = value.shareInAgent === true;
         session.stage = 'checking'; session.message = '正在登录服务器';
         const progress = (stage, message) => { session.stage = stage; session.message = message; };
         // Reply immediately so MCP/UI calls never wait for package installation.
@@ -101,7 +100,6 @@ export async function createApp(backend = {inspectHost, deploy, verifyConnection
     connection(id) {
       this.status(id); const s = sessions.get(id);
       if (!s.result || s.stage !== 'done') throw new Error('安装或检测尚未完成，请稍后查询状态');
-      if (!s.shareInAgent) return {content: [{type: 'text', text: '用户选择只在本机配置页查看二维码，请回到刚才的页面。'}]};
       return {content: [{type: 'text', text: JSON.stringify({...view(s), uri: s.result.uri,
         page: `${origin}/#${s.token}`, note: '二维码和链接是 VPN 凭据；请勿上传公共图床。Mihomo 配置可在本机页面下载。'})},
         {type: 'image', mimeType: 'image/png', data: s.qr.split(',')[1], annotations: {audience: ['user']}}]};
